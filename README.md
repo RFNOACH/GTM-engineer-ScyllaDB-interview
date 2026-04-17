@@ -42,6 +42,8 @@ The whole thing runs with one click inside n8n, a visual workflow tool. No codin
 │          │          │          │          │ skip+log │          │             │
 └──────────┴──────────┴──────────┴──────────┴──────────┴──────────┴─────────────┘
 ```
+<img width="801" height="292" alt="image" src="https://github.com/user-attachments/assets/68b86c5a-a43d-4ca4-ad4b-817d54766cbd" />
+
 
 ---
 
