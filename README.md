@@ -148,7 +148,7 @@ A JSON summary is generated at the end of every run. See [`output/sample_campaig
 
 ### 4. Dry Run Log (`output/dry_run_log.txt`)
 A human-readable text file showing exactly what would have been sent to each person. See [`output/sample_dry_run_log.txt`](output/sample_dry_run_log.txt) for an example.
-
+You can also see an example of Google sheets output in the file ScyllaDB_GTM_Hunter_Sample_Output.xlsx
 ---
 
 ## Why n8n?
