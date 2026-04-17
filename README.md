@@ -119,7 +119,7 @@ See [`prompts/PROMPTS.md`](prompts/PROMPTS.md) for the full prompt text and deta
 
 ## The Dry Run — Seeing Output Without Sending Anything
 
-This is important: **no real messages are ever sent.** Everything runs in simulation mode.
+This is important: **no real messages are  sent.** Everything runs in simulation mode. To actually send messages in production you would need to add a LinkedIn API node or an email node (like Gmail or SendGrid) as an extra step at the end.
 
 Here's what the dry run produces:
 
