@@ -2,7 +2,7 @@
 
 # ScyllaDB GTM Hunter
 
-> An automated, AI-powered workflow that finds potential customers using a competitor's product, scores them by how likely they are to switch, writes them personalized messages, and logs everything — without sending a single real email.
+> An automated, AI-powered workflow with N8N that finds potential customers using a competitor's product, scores them by how likely they are to switch, writes them personalized messages, and logs everything — without sending a single real email.
 
 ---
 
