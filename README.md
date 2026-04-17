@@ -1,6 +1,6 @@
 ![ScyllaDB GTM Hunter](assets/banner.svg)
 
-# ScyllaDB GTM Hunter
+# ScyllaDB GTM Hunter (by Althay Ramallo)
 
 > An automated, AI-powered workflow with N8N that finds potential customers using a competitor's product, scores them by how likely they are to switch, writes them personalized messages, and logs everything — without sending a single real email.
 
@@ -16,7 +16,7 @@ This project automates that entire process. It:
 2. **Reads** their LinkedIn profiles to understand who they are
 3. **Scores** each person 0–100 based on how likely they are to be a good prospect
 4. **Writes** a personalized LinkedIn message and follow-up email for each qualified person
-5. **Logs** everything to a spreadsheet and generates a campaign report
+5. **Logs** everything to a spreadsheet and generates a campaign report. Ideally the output could be sent to a more structured database or even the Salesforce or equivalent CRM tool.
 6. **Never sends** anything real — it's a "dry run" that shows exactly what would happen
 
 The whole thing runs with one click inside n8n, a visual workflow tool. No coding required to run it.
