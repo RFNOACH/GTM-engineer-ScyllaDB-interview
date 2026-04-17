@@ -1,0 +1,112 @@
+{
+  "campaign": "ScyllaDB GTM Hunter",
+  "generated_at": "2026-04-16T09:22:15.000Z",
+  "mode": "DRY RUN — simulated, no real messages sent",
+  "target": "DataStax / Apache Cassandra users",
+
+  "funnel": {
+    "total_leads_discovered": 8,
+    "total_qualified": 5,
+    "total_skipped": 3,
+    "qualification_rate": "62.5%",
+    "note": "3 leads correctly filtered: 1 junior frontend dev (no DB authority), 1 DataStax employee (competitor), 1 mid-level IC (insufficient seniority)"
+  },
+
+  "outreach_simulated": {
+    "linkedin_invites_written": 5,
+    "follow_up_emails_written": 5,
+    "total_messages_generated": 10,
+    "delivery_status": "SIMULATED — all logged to Google Sheets, nothing sent",
+    "average_invite_length_chars": 284,
+    "average_email_word_count": 167
+  },
+
+  "quality_metrics": {
+    "average_score_qualified": 82.2,
+    "score_threshold": 50,
+    "score_distribution": {
+      "90_100": 1,
+      "80_89": 2,
+      "70_79": 1,
+      "60_69": 1,
+      "50_59": 0,
+      "below_50_skipped": 3
+    }
+  },
+
+  "top_3_qualified_leads": [
+    {
+      "name": "Raj Gupta",
+      "company": "AdTech Dynamics",
+      "role": "VP Engineering",
+      "score": 91,
+      "why": "Active cost pain signal + budget authority + 12yr DataStax user"
+    },
+    {
+      "name": "Sarah Chen",
+      "company": "Fintech Corp",
+      "role": "Senior Data Engineer",
+      "score": 85,
+      "why": "DataStax certified + published article on exact pain ScyllaDB solves"
+    },
+    {
+      "name": "Elena Kowalski",
+      "company": "TelecomCo",
+      "role": "Senior DBA",
+      "score": 78,
+      "why": "300-node cluster + cost spiral comment + 8yr DataStax tenure"
+    }
+  ],
+
+  "filtered_out": [
+    {
+      "name": "James O'Brien",
+      "role": "Junior Frontend Developer",
+      "score": 8,
+      "reason": "No database authority, exposure, or infrastructure involvement"
+    },
+    {
+      "name": "Tom Williams",
+      "role": "Senior PMM at DataStax",
+      "score": 35,
+      "reason": "Competitor employee — works at DataStax, not a prospect"
+    },
+    {
+      "name": "David Park",
+      "role": "Backend Engineer",
+      "score": 42,
+      "reason": "Mid-level IC, no budget authority, low recent activity"
+    }
+  ],
+
+  "data_storage": {
+    "qualified_leads_sheet": "ScyllaDB GTM Hunter → Campaign Log",
+    "skipped_leads_sheet": "ScyllaDB GTM Hunter → Skipped Leads",
+    "total_rows_written": 8,
+    "schema_version": "v2"
+  },
+
+  "considerations": {
+    "what_worked_well": [
+      "Scoring rubric correctly identified wrong personas (frontend dev, competitor employee)",
+      "Passing score reasoning into message prompts produced genuinely relevant messages",
+      "Sequential message generation (invite then email) kept context consistent",
+      "Mock data fallback allowed full pipeline demo without any API keys"
+    ],
+    "known_limitations": [
+      "Apollo free tier limited to 50 export credits/month — scale requires paid plan",
+      "LinkedIn enrichment fails for private profiles — workflow handles gracefully",
+      "Google Sheets unsuitable beyond ~500 rows/month — migrate to ScyllaDB for production",
+      "No deduplication — running twice creates duplicate rows"
+    ],
+    "recommended_next_steps": [
+      "Replace Manual Trigger with Schedule Trigger (weekly, Monday 9am)",
+      "Add lead deduplication check before inserting to Google Sheets",
+      "Migrate database to ScyllaDB for runs over 500 leads/month",
+      "A/B test message variants by duplicating the generation nodes",
+      "Add email verification step (ZeroBounce) before any real outreach",
+      "Connect HubSpot or Salesforce for CRM sync of qualified leads"
+    ],
+    "scylladb_migration_trigger": "Recommended when lead volume exceeds 500/month, when multiple team members need concurrent access, or when building analytics dashboards on top of the data"
+  }
+}

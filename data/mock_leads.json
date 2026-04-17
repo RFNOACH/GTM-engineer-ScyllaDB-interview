@@ -1,0 +1,98 @@
+[
+  {
+    "_note": "QUALIFIED — VP with active cost pain signal",
+    "first_name": "Raj", "last_name": "Gupta",
+    "title": "VP Engineering", "organization_name": "AdTech Dynamics",
+    "industry": "Advertising Technology",
+    "headline": "VP Engineering @ AdTech Dynamics | Distributed Systems | Cost Optimization",
+    "linkedin_url": "https://linkedin.com/in/raj-gupta-adtech",
+    "experience_summary": "12 years in engineering leadership. Led migration from MySQL to Cassandra/DataStax at scale. Managing $2M+ database infrastructure budget.",
+    "recent_activity": "Posted last week: 'Our Cassandra cluster costs increased 40% this year. Looking at alternatives that don't sacrifice CQL compatibility.'",
+    "skills": "Apache Cassandra, DataStax, Distributed Systems, Cost Optimization, AWS",
+    "_expected_score": 91, "_expected_outcome": "qualified"
+  },
+  {
+    "_note": "QUALIFIED — DataStax certified, published on GC pauses",
+    "first_name": "Sarah", "last_name": "Chen",
+    "title": "Senior Data Engineer", "organization_name": "Fintech Corp",
+    "industry": "Financial Services",
+    "headline": "Senior Data Engineer | Real-time pipelines | Cassandra at scale",
+    "linkedin_url": "https://linkedin.com/in/sarah-chen-fintech",
+    "experience_summary": "7 years in data engineering. DataStax Cassandra certified. Runs 120-node cluster processing 2M transactions/sec. Spoke at Cassandra Summit.",
+    "recent_activity": "Published article 3 weeks ago: 'Surviving JVM GC pauses in high-throughput Cassandra deployments — lessons learned the hard way'",
+    "skills": "Apache Cassandra, DataStax Enterprise, Java, Kafka, Spark, GC Tuning",
+    "_expected_score": 85, "_expected_outcome": "qualified"
+  },
+  {
+    "_note": "QUALIFIED — 300-node cluster, node sprawl pain",
+    "first_name": "Elena", "last_name": "Kowalski",
+    "title": "Senior Database Administrator", "organization_name": "TelecomCo",
+    "industry": "Telecommunications",
+    "headline": "Sr. DBA | Cassandra | Telecom billing systems",
+    "linkedin_url": "https://linkedin.com/in/elena-kowalski-dba",
+    "experience_summary": "10 years as DBA. Manages 300-node Cassandra cluster for billing/CDR data. DataStax Enterprise customer since 2018. Reports to CTO.",
+    "recent_activity": "Commented 2 months ago: 'We keep adding nodes to handle throughput but costs are spiraling. There has to be a better way.'",
+    "skills": "Apache Cassandra, DataStax Enterprise, Oracle, SQL, Performance Tuning",
+    "_expected_score": 78, "_expected_outcome": "qualified"
+  },
+  {
+    "_note": "QUALIFIED — Solutions architect, evaluates DB tech for clients",
+    "first_name": "Marcus", "last_name": "Reed",
+    "title": "Solutions Architect", "organization_name": "CloudScale Inc",
+    "industry": "Cloud Computing",
+    "headline": "Solutions Architect | NoSQL | Distributed Databases",
+    "linkedin_url": "https://linkedin.com/in/marcus-reed-sa",
+    "experience_summary": "8 years as solutions architect. Evaluates database tech for enterprise clients. Run Cassandra POCs at multiple Fortune 500 companies.",
+    "recent_activity": "Shared article about database TCO comparisons across NoSQL vendors last month.",
+    "skills": "Apache Cassandra, MongoDB, DynamoDB, Redis, Enterprise Architecture",
+    "_expected_score": 72, "_expected_outcome": "qualified"
+  },
+  {
+    "_note": "QUALIFIED — Platform engineer, latency pain at 50M users",
+    "first_name": "Priya", "last_name": "Nair",
+    "title": "Platform Engineer", "organization_name": "StreamingCo",
+    "industry": "Media & Entertainment",
+    "headline": "Platform Engineer | Kafka | Cassandra | High-throughput systems",
+    "linkedin_url": "https://linkedin.com/in/priya-nair-platform",
+    "experience_summary": "5 years in platform engineering. Maintains data infrastructure for streaming platform with 50M+ users. Uses DataStax for user preferences.",
+    "recent_activity": "Posted 6 weeks ago about latency issues in recommendation engine tied to database read times.",
+    "skills": "Apache Cassandra, Kafka, Kubernetes, Python, Go, AWS",
+    "_expected_score": 65, "_expected_outcome": "qualified"
+  },
+  {
+    "_note": "SKIPPED — Mid-level IC, no budget authority",
+    "first_name": "David", "last_name": "Park",
+    "title": "Backend Engineer", "organization_name": "E-commerce Plus",
+    "industry": "E-commerce",
+    "headline": "Backend Engineer | Java | Cassandra | Microservices",
+    "linkedin_url": "https://linkedin.com/in/david-park-backend",
+    "experience_summary": "4 years as backend engineer. Uses Cassandra for product catalog. No budget authority.",
+    "recent_activity": "Liked a Cassandra post 3 months ago. No original content.",
+    "skills": "Java, Spring Boot, Apache Cassandra, MySQL, Docker",
+    "_expected_score": 42, "_expected_outcome": "skipped — low seniority"
+  },
+  {
+    "_note": "SKIPPED — Wrong persona entirely (frontend, no DB relevance)",
+    "first_name": "James", "last_name": "O'Brien",
+    "title": "Junior Frontend Developer", "organization_name": "Web Agency",
+    "industry": "Marketing",
+    "headline": "Frontend Developer | React | Vue | UI/UX",
+    "linkedin_url": "https://linkedin.com/in/james-obrien-frontend",
+    "experience_summary": "2 years as frontend developer. Works on marketing websites. Zero database experience.",
+    "recent_activity": "Posted about CSS animations last week.",
+    "skills": "React, Vue.js, HTML, CSS, JavaScript, Figma",
+    "_expected_score": 8, "_expected_outcome": "skipped — wrong persona"
+  },
+  {
+    "_note": "SKIPPED — Competitor employee (DataStax marketing)",
+    "first_name": "Tom", "last_name": "Williams",
+    "title": "Senior Product Marketing Manager", "organization_name": "DataStax",
+    "industry": "Enterprise Software",
+    "headline": "Product Marketing @ DataStax | Messaging | GTM",
+    "linkedin_url": "https://linkedin.com/in/tom-williams-datastax",
+    "experience_summary": "6 years in B2B tech marketing. Currently at DataStax running product marketing for Astra DB.",
+    "recent_activity": "Regularly posts DataStax product announcements and Astra DB feature highlights.",
+    "skills": "Product Marketing, GTM Strategy, DataStax, Astra DB",
+    "_expected_score": 35, "_expected_outcome": "skipped — competitor employee"
+  }
+]

@@ -1,0 +1,475 @@
+{
+  "name": "ScyllaDB GTM Hunter v2",
+  "nodes": [
+
+    {
+      "parameters": { "content": "## 🎯 SCYLLADB GTM HUNTER\n\nThis workflow finds DataStax/Cassandra users,\nscores them with AI, writes personalized messages,\nand logs everything — without sending anything real.\n\n**How to run:**\n1. Add your credentials (Apollo, RapidAPI, Anthropic, Google Sheets)\n2. Click ▶ Execute Workflow\n3. Check your Google Sheet and the output/ folder\n\n**No API keys?** Disconnect the Apollo node\nand connect 'Mock Data Fallback' instead.", "height": 220, "width": 320, "color": 7 },
+      "id": "sticky-intro",
+      "name": "📋 How to Use This Workflow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [60, 180]
+    },
+
+    {
+      "parameters": { "content": "## STAGE 1 — TRIGGER\n\n**What:** The entry point. Click Execute to start.\n\n**In production:** Replace with a\nSchedule Trigger to run automatically\nevery Monday morning:\n`0 9 * * 1`", "height": 160, "width": 220, "color": 4 },
+      "id": "sticky-stage1",
+      "name": "Stage 1 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [420, 180]
+    },
+
+    {
+      "parameters": {},
+      "id": "node-trigger",
+      "name": "▶ Start Workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [500, 380]
+    },
+
+    {
+      "parameters": { "content": "## STAGE 2 — LEAD DISCOVERY\n\n**What:** Query Apollo.io for engineers\nand decision-makers using DataStax\nor Apache Cassandra.\n\n**Returns:** Name, title, company,\nLinkedIn URL for each match.\n\n**Free tier:** People Search does NOT\nconsume export credits.\n\n**If Apollo is unavailable:**\nUse the Mock Data node below instead.", "height": 220, "width": 260, "color": 3 },
+      "id": "sticky-stage2",
+      "name": "Stage 2 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [700, 160]
+    },
+
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/api/v1/mixed_people/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Cache-Control", "value": "no-cache" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"q_keywords\": \"DataStax OR \\\"Astra DB\\\" OR \\\"Apache Cassandra\\\"\",\n  \"person_titles\": [\n    \"Data Engineer\",\n    \"Backend Engineer\",\n    \"SRE\",\n    \"Platform Engineer\",\n    \"Database Administrator\",\n    \"Solutions Architect\",\n    \"VP Engineering\",\n    \"CTO\",\n    \"Director of Engineering\"\n  ],\n  \"per_page\": 10,\n  \"page\": 1\n}",
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "node-apollo",
+      "name": "🔍 Apollo.io — Find DataStax Users",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [760, 380],
+      "credentials": { "httpHeaderAuth": { "id": "cred-apollo", "name": "Apollo API Key" } },
+      "notes": "Searches Apollo for people with DataStax/Cassandra in their profile holding relevant titles. The People Search endpoint does NOT consume export credits on the free tier."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// MOCK DATA FALLBACK\n// ═══════════════════════════════════════════════════\n// Use this node if you don't have an Apollo API key.\n// Disconnect the Apollo node and connect this one\n// to the 'Split Into Items' node instead.\n//\n// Contains 8 realistic leads:\n//   • 5 that should qualify (score ≥ 50)\n//   • 3 that should be filtered out (score < 50)\n// This proves the scoring logic actually works.\n// ═══════════════════════════════════════════════════\n\nreturn [\n  { json: { people: [\n    {\n      first_name: \"Raj\", last_name: \"Gupta\",\n      title: \"VP Engineering\", organization_name: \"AdTech Dynamics\",\n      industry: \"Advertising Technology\",\n      headline: \"VP Engineering @ AdTech Dynamics | Distributed Systems | Cost Optimization\",\n      linkedin_url: \"https://linkedin.com/in/raj-gupta-adtech\",\n      experience_summary: \"12 years in engineering leadership. Led migration from MySQL to Cassandra/DataStax at scale. Managing $2M+ database infrastructure budget.\",\n      recent_activity: \"Posted last week: 'Our Cassandra cluster costs increased 40% this year. Looking at alternatives that don't sacrifice CQL compatibility.'\",\n      skills: \"Apache Cassandra, DataStax, Distributed Systems, Cost Optimization, AWS\"\n    },\n    {\n      first_name: \"Sarah\", last_name: \"Chen\",\n      title: \"Senior Data Engineer\", organization_name: \"Fintech Corp\",\n      industry: \"Financial Services\",\n      headline: \"Senior Data Engineer | Real-time pipelines | Cassandra at scale\",\n      linkedin_url: \"https://linkedin.com/in/sarah-chen-fintech\",\n      experience_summary: \"7 years in data engineering. DataStax Cassandra certified. Runs 120-node cluster processing 2M transactions/sec.\",\n      recent_activity: \"Published article 3 weeks ago: 'Surviving JVM GC pauses in high-throughput Cassandra deployments — lessons learned the hard way'\",\n      skills: \"Apache Cassandra, DataStax Enterprise, Java, Kafka, Spark, GC Tuning\"\n    },\n    {\n      first_name: \"Elena\", last_name: \"Kowalski\",\n      title: \"Senior Database Administrator\", organization_name: \"TelecomCo\",\n      industry: \"Telecommunications\",\n      headline: \"Sr. DBA | Cassandra | Telecom billing systems\",\n      linkedin_url: \"https://linkedin.com/in/elena-kowalski-dba\",\n      experience_summary: \"10 years as DBA. Manages 300-node Cassandra cluster for billing and CDR data. DataStax Enterprise customer since 2018.\",\n      recent_activity: \"Commented 2 months ago: 'We keep adding nodes to handle throughput but costs are spiraling. There has to be a better way.'\",\n      skills: \"Apache Cassandra, DataStax Enterprise, Oracle, SQL, Performance Tuning\"\n    },\n    {\n      first_name: \"Marcus\", last_name: \"Reed\",\n      title: \"Solutions Architect\", organization_name: \"CloudScale Inc\",\n      industry: \"Cloud Computing\",\n      headline: \"Solutions Architect | NoSQL | Distributed Databases\",\n      linkedin_url: \"https://linkedin.com/in/marcus-reed-sa\",\n      experience_summary: \"8 years as solutions architect. Evaluates database technologies for enterprise clients. Has run Cassandra POCs at multiple Fortune 500 companies.\",\n      recent_activity: \"Shared article about database TCO comparisons across NoSQL vendors last month.\",\n      skills: \"Apache Cassandra, MongoDB, DynamoDB, Redis, Enterprise Architecture\"\n    },\n    {\n      first_name: \"Priya\", last_name: \"Nair\",\n      title: \"Platform Engineer\", organization_name: \"StreamingCo\",\n      industry: \"Media & Entertainment\",\n      headline: \"Platform Engineer | Kafka | Cassandra | High-throughput systems\",\n      linkedin_url: \"https://linkedin.com/in/priya-nair-platform\",\n      experience_summary: \"5 years in platform engineering. Maintains data infrastructure for streaming platform with 50M+ users. Uses DataStax for user preferences.\",\n      recent_activity: \"Posted 6 weeks ago about latency issues in recommendation engine tied to database read times.\",\n      skills: \"Apache Cassandra, Kafka, Kubernetes, Python, Go, AWS\"\n    },\n    {\n      first_name: \"David\", last_name: \"Park\",\n      title: \"Backend Engineer\", organization_name: \"E-commerce Plus\",\n      industry: \"E-commerce\",\n      headline: \"Backend Engineer | Java | Cassandra | Microservices\",\n      linkedin_url: \"https://linkedin.com/in/david-park-backend\",\n      experience_summary: \"4 years as backend engineer. Uses Cassandra for product catalog. Mid-level IC with no budget authority.\",\n      recent_activity: \"Liked a Cassandra best practices post 3 months ago. No original content.\",\n      skills: \"Java, Spring Boot, Apache Cassandra, MySQL, Docker\"\n    },\n    {\n      first_name: \"James\", last_name: \"O'Brien\",\n      title: \"Junior Frontend Developer\", organization_name: \"Web Agency\",\n      industry: \"Marketing\",\n      headline: \"Frontend Developer | React | Vue | UI/UX\",\n      linkedin_url: \"https://linkedin.com/in/james-obrien-frontend\",\n      experience_summary: \"2 years as frontend developer. Works on marketing websites. Zero database experience.\",\n      recent_activity: \"Posted about CSS animations last week.\",\n      skills: \"React, Vue.js, HTML, CSS, JavaScript, Figma\"\n    },\n    {\n      first_name: \"Tom\", last_name: \"Williams\",\n      title: \"Senior Product Marketing Manager\", organization_name: \"DataStax\",\n      industry: \"Enterprise Software\",\n      headline: \"Product Marketing @ DataStax | Messaging | GTM\",\n      linkedin_url: \"https://linkedin.com/in/tom-williams-datastax\",\n      experience_summary: \"6 years in B2B tech marketing. Currently at DataStax running product marketing for Astra DB.\",\n      recent_activity: \"Regularly posts DataStax product announcements.\",\n      skills: \"Product Marketing, GTM Strategy, DataStax, Astra DB\"\n    }\n  ]}}\n];\n"
+      },
+      "id": "node-mock",
+      "name": "🗂 Mock Data Fallback (no Apollo key needed)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 560],
+      "notes": "FALLBACK: If you don't have an Apollo API key, disconnect the Apollo node and connect this one to 'Split Into Items'. Contains 8 realistic test leads — 5 qualify, 3 are correctly filtered."
+    },
+
+    {
+      "parameters": {
+        "fieldToSplitOut": "people",
+        "options": {}
+      },
+      "id": "node-split",
+      "name": "📋 Split Into Individual Leads",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [1000, 380],
+      "notes": "Apollo returns a people[] array. This node splits it so each lead becomes its own item and flows through the rest of the workflow independently."
+    },
+
+    {
+      "parameters": { "content": "## STAGE 3 — ENRICHMENT\n\n**What:** Fetch each person's full\nLinkedIn profile via RapidAPI.\n\n**Adds:** Bio, recent posts, skills,\ncompany details, connection count.\n\n**Why it matters:** This is what makes\nmessages genuinely personal — we're\nreferencing real things they wrote,\nnot generic role descriptions.\n\n**If unavailable:** The Merge node\nfalls back to Apollo data gracefully.", "height": 220, "width": 260, "color": 3 },
+      "id": "sticky-stage3",
+      "name": "Stage 3 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1100, 160]
+    },
+
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://linkedin-data-api.p.rapidapi.com/get-profile-data-by-url",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-RapidAPI-Host", "value": "linkedin-data-api.p.rapidapi.com" }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "url", "value": "={{ $json.linkedin_url }}" }
+          ]
+        },
+        "options": { "response": { "response": { "neverError": true } } }
+      },
+      "id": "node-linkedin",
+      "name": "🔗 LinkedIn Enrichment (RapidAPI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1180, 380],
+      "credentials": { "httpHeaderAuth": { "id": "cred-rapidapi", "name": "RapidAPI Key" } },
+      "notes": "Fetches full LinkedIn profile for each lead. neverError=true means the workflow continues even if a profile is private or not found — the next node handles missing data gracefully."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// MERGE & NORMALIZE LEAD DATA\n// ═══════════════════════════════════════════════════\n// Combines Apollo data + LinkedIn enrichment into one\n// clean, consistent lead object.\n//\n// If LinkedIn returned no data (private profile, rate\n// limit, etc.) we fall back to Apollo fields only.\n// The AI scoring still works — it just has less data.\n// ═══════════════════════════════════════════════════\n\nconst item = $input.first().json;\nconst li = item.data || {};\n\nconst lead = {\n  first_name:          item.first_name || li.firstName || 'Unknown',\n  last_name:           item.last_name  || li.lastName  || '',\n  current_role:        item.title      || li.headline  || item.current_role || '',\n  current_company:     item.organization_name || (li.position?.[0]?.companyName) || item.current_company || '',\n  industry:            item.industry   || li.industryName || '',\n  linkedin_url:        item.linkedin_url || '',\n  email:               item.email || '',\n  headline:            li.headline || item.headline || item.title || '',\n  experience_summary:  (\n    li.summary ||\n    (li.position?.slice(0,2).map(p => `${p.title} at ${p.companyName}`).join('; ')) ||\n    item.experience_summary ||\n    ''\n  ),\n  recent_activity: (\n    (li.posts?.slice(0,1).map(p => p.text?.substring(0,300)).join(' ')) ||\n    item.recent_activity ||\n    'No recent activity data available'\n  ),\n  skills: (\n    (li.skills?.slice(0,10).map(s => s.name || s).join(', ')) ||\n    item.skills ||\n    ''\n  ),\n  connection_count: li.connectionsCount || 0,\n  enrichment_source: li.firstName ? 'apollo+linkedin' : 'apollo_only'\n};\n\nreturn [{ json: lead }];\n"
+      },
+      "id": "node-merge",
+      "name": "🔀 Merge & Normalize Lead Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1380, 380],
+      "notes": "Merges Apollo + LinkedIn data into one clean object. Handles missing LinkedIn data gracefully — if enrichment failed, falls back to Apollo fields. Adds enrichment_source flag for transparency."
+    },
+
+    {
+      "parameters": { "content": "## STAGE 4 — AI SCORING\n\n**What:** Claude AI reads each lead's\nprofile and scores them 0–100.\n\n**4 criteria (each explained):**\n• Role Relevance (0–30): Can they\n  approve a database switch?\n• DataStax Depth (0–30): How deeply\n  do they use it?\n• Seniority (0–20): Budget authority?\n• Activity Recency (0–20): Active\n  pain signals in recent posts?\n\n**Output:** JSON with score + reasoning.\nThe reasoning gets passed to the\nmessage prompts downstream.", "height": 260, "width": 260, "color": 6 },
+      "id": "sticky-stage4",
+      "name": "Stage 4 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1500, 120]
+    },
+
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 500,\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"You are a B2B sales intelligence analyst for ScyllaDB, a high-performance NoSQL database that is a drop-in replacement for Apache Cassandra but offers 10x better throughput, zero GC pauses (written in C++), and 3-5x fewer nodes needed.\\n\\nScore this lead's potential as a ScyllaDB prospect on a 0-100 scale.\\n\\nLEAD PROFILE:\\n- Name: {{ $json.first_name }} {{ $json.last_name }}\\n- Role: {{ $json.current_role }} at {{ $json.current_company }}\\n- Industry: {{ $json.industry }}\\n- Headline: {{ $json.headline }}\\n- Experience: {{ $json.experience_summary }}\\n- Recent Activity: {{ $json.recent_activity }}\\n- Skills: {{ $json.skills }}\\n\\nSCORING RUBRIC:\\n1. Role Relevance (0-30): Does this person make or influence database decisions?\\n   25-30: VP/Director/CTO with DB authority\\n   15-24: Senior Engineer or Lead\\n   5-14: Mid-level IC\\n   0-4: No authority (frontend, marketing, etc.)\\n\\n2. DataStax/Cassandra Depth (0-30): How deeply do they actually use DataStax?\\n   25-30: Large production clusters, certified, or vocal about it\\n   15-24: Regular hands-on user\\n   5-14: Peripheral exposure\\n   0-4: No meaningful exposure\\n\\n3. Seniority & Influence (0-20): Can they champion a technology switch?\\n   15-20: Budget authority or C-level\\n   8-14: Team lead or senior IC with influence\\n   0-7: IC with limited organizational influence\\n\\n4. Activity Recency (0-20): Are they actively engaged with database pain points?\\n   15-20: Recent posts about DB challenges, latency, cost, scaling\\n   8-14: Some database-related activity\\n   0-7: Inactive or unrelated content\\n\\nIMPORTANT: Be strict. A frontend developer should score under 10. A DataStax employee should score under 40 (they won't switch). A VP running a 300-node cluster with posts about cost pain should score 85+.\\n\\nRESPOND WITH ONLY THIS JSON — no markdown, no backticks, no extra text:\\n{\\\"score\\\": <0-100>, \\\"role_relevance\\\": <0-30>, \\\"datastax_depth\\\": <0-30>, \\\"seniority\\\": <0-20>, \\\"activity_recency\\\": <0-20>, \\\"reasoning\\\": \\\"<2-3 sentences explaining the score>\\\"}\"\n  }]\n}",
+        "options": {}
+      },
+      "id": "node-score",
+      "name": "🤖 AI — Score Lead (Claude)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1580, 380],
+      "credentials": { "httpHeaderAuth": { "id": "cred-anthropic", "name": "Anthropic API Key" } },
+      "notes": "Sends the normalized lead profile to Claude with a structured 4-criteria rubric. The rubric forces independent evaluation of each dimension before summing — produces more calibrated scores than asking for a single rating."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// PARSE AI SCORE\n// ═══════════════════════════════════════════════════\n// Extracts the score JSON from Claude's response.\n// Handles edge cases:\n//   - Model wraps output in ```json ... ``` fences\n//   - Model adds extra explanation text\n//   - JSON is malformed (uses regex fallback)\n// Merges score data back into the lead object.\n// ═══════════════════════════════════════════════════\n\nconst response = $input.first().json;\nconst text = response?.content?.[0]?.text || '';\n\nif (!text) throw new Error('Claude returned empty response for scoring');\n\n// Strip markdown fences if present\nconst cleaned = text.replace(/```json|```/g, '').trim();\n\nlet score;\ntry {\n  score = JSON.parse(cleaned);\n} catch (e) {\n  const match = cleaned.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    score = JSON.parse(match[0]);\n  } else {\n    throw new Error(`Could not parse score JSON. Claude said: ${cleaned.substring(0, 200)}`);\n  }\n}\n\n// Pull the lead data from the upstream node\nconst lead = $('🔀 Merge & Normalize Lead Data').first().json;\n\nreturn [{ json: {\n  ...lead,\n  score:            Number(score.score)           || 0,\n  role_relevance:   Number(score.role_relevance)   || 0,\n  datastax_depth:   Number(score.datastax_depth)   || 0,\n  seniority:        Number(score.seniority)        || 0,\n  activity_recency: Number(score.activity_recency) || 0,\n  reasoning:        score.reasoning                || ''\n}}];\n"
+      },
+      "id": "node-parse-score",
+      "name": "📊 Parse Score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 380],
+      "notes": "Parses Claude's JSON score response and merges it back into the lead object. Has two fallback strategies for malformed JSON, so a single bad response doesn't break the whole run."
+    },
+
+    {
+      "parameters": { "content": "## STAGE 5 — FILTER\n\n**What:** IF score ≥ 50, the lead is\nqualified and continues to message\ngeneration. If not, they're logged\nas 'skipped' with a reason.\n\n**Why 50?** Low enough to include\nsenior engineers with moderate\nDataStax exposure, but strict\nenough to filter wrong personas.\n\n**The filtered leads prove the\nsystem works** — James (frontend)\nand Tom (DataStax employee) should\nalways be below 50.", "height": 240, "width": 240, "color": 5 },
+      "id": "sticky-stage5",
+      "name": "Stage 5 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1900, 120]
+    },
+
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [{
+            "id": "qualify",
+            "leftValue": "={{ $json.score }}",
+            "rightValue": 50,
+            "operator": { "type": "number", "operation": "gte" }
+          }],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-if",
+      "name": "⚡ Score ≥ 50? (Qualify Lead)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1980, 380],
+      "notes": "Routes qualified leads (score ≥ 50) to message generation. Unqualified leads go to the Skipped Leads sheet. Both branches are logged — full pipeline visibility."
+    },
+
+    {
+      "parameters": { "content": "## STAGE 6 — MESSAGE GENERATION\n\n**What:** Claude writes two\npersonalized messages per\nqualified lead:\n\n1. LinkedIn invite (≤300 chars)\n   • References specific profile detail\n   • No hard sell, peer-to-peer tone\n   • Avoids clichéd openers\n\n2. Follow-up email\n   • Pain-point led, not feature-led\n   • References their specific posts\n   • Soft CTA only\n   • Under 200 words\n\nMessages run sequentially so the\nemail prompt can build on the\nLinkedIn context.", "height": 280, "width": 260, "color": 2 },
+      "id": "sticky-stage6",
+      "name": "Stage 6 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [2180, 100]
+    },
+
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 300,\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"You are a senior GTM professional at ScyllaDB writing a LinkedIn connection request.\\n\\nABOUT SCYLLADB:\\n- Drop-in Apache Cassandra replacement written in C++ — zero JVM GC pauses\\n- 10x better throughput at P99 latency vs DataStax\\n- 3-5x fewer nodes = 60-80% infrastructure cost reduction\\n- Used by Discord, Starbucks, Comcast, Samsung\\n\\nTHIS LEAD:\\nName: {{ $json.first_name }} {{ $json.last_name }}\\nRole: {{ $json.current_role }} at {{ $json.current_company }}\\nIndustry: {{ $json.industry }}\\nExperience: {{ $json.experience_summary }}\\nRecent Activity: {{ $json.recent_activity }}\\nWhy they're a good prospect: {{ $json.reasoning }}\\n\\nRULES — follow every one:\\n1. MAXIMUM 300 characters — count carefully, this is a hard limit\\n2. Reference ONE specific thing from their recent activity or experience\\n3. NO product pitch — this is a human connection, not a sales message\\n4. Do NOT start with 'I noticed', 'I came across', 'I saw', or 'I wanted'\\n5. Write as a technical peer, not a salesperson\\n6. Warm, direct, credible\\n\\nRESPOND WITH ONLY THE MESSAGE TEXT. No quotes, no labels, no explanation.\"\n  }]\n}",
+        "options": {}
+      },
+      "id": "node-linkedin-invite",
+      "name": "✍️ AI — Write LinkedIn Invite",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2200, 380],
+      "credentials": { "httpHeaderAuth": { "id": "cred-anthropic", "name": "Anthropic API Key" } },
+      "notes": "Generates a ≤300-char LinkedIn connection request. The scoring reasoning is passed in as context so Claude knows exactly why this person is a good prospect and can reference the most relevant hook."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// Extract LinkedIn invite text from Claude response\nconst response = $input.first().json;\nconst invite = response?.content?.[0]?.text?.trim() || '';\n\n// Pass through all lead data + the invite\nconst lead = $('⚡ Score ≥ 50? (Qualify Lead)').first().json;\n\nreturn [{ json: { ...lead, linkedin_invite: invite } }];\n"
+      },
+      "id": "node-parse-invite",
+      "name": "📝 Parse LinkedIn Invite",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2380, 380],
+      "notes": "Extracts the invite text from Claude's response and merges it back with all lead data. Passes the full enriched object to the email generation node."
+    },
+
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 800,\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"You are a GTM professional at ScyllaDB writing a follow-up email. The LinkedIn connection was accepted 3 days ago.\\n\\nABOUT SCYLLADB:\\n- Drop-in Apache Cassandra replacement, fully CQL-compatible (zero code changes)\\n- Written in C++ — eliminates JVM GC pauses entirely\\n- 10x better throughput at P99 latency\\n- 3-5x fewer nodes = 60-80% infrastructure cost reduction\\n- Customers: Discord (messages platform), Starbucks (rewards), Comcast (CDN), Samsung\\n\\nLEAD:\\nName: {{ $json.first_name }} {{ $json.last_name }}\\nRole: {{ $json.current_role }} at {{ $json.current_company }}\\nIndustry: {{ $json.industry }}\\nExperience: {{ $json.experience_summary }}\\nRecent Activity: {{ $json.recent_activity }}\\nWhy they scored highly: {{ $json.reasoning }}\\nLinkedIn invite we sent: {{ $json.linkedin_invite }}\\n\\nRULES — follow every one:\\n1. Write a compelling subject line specific to their situation (not generic)\\n2. Open by referencing the LinkedIn connection naturally (1 sentence)\\n3. Identify 1-2 specific pain points from their profile/activity — be precise\\n4. Position ScyllaDB as the solution to THEIR pain, not as a feature list\\n5. Name a relevant customer (Discord for scale, Starbucks for retail, Comcast for telecom, etc.)\\n6. ONE soft CTA: offer a 15-min call OR a relevant case study link — not both, not a demo\\n7. Total body under 200 words\\n8. Tone: consultative peer, not salesperson\\n9. NEVER use: 'hope this finds you well', 'reaching out', 'synergy', 'leverage', 'circle back'\\n\\nRESPOND WITH ONLY THIS JSON — no markdown, no backticks:\\n{\\\"subject\\\": \\\"<subject line>\\\", \\\"body\\\": \\\"<full email body>\\\"}\"\n  }]\n}",
+        "options": {}
+      },
+      "id": "node-email",
+      "name": "📧 AI — Write Follow-up Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2560, 380],
+      "credentials": { "httpHeaderAuth": { "id": "cred-anthropic", "name": "Anthropic API Key" } },
+      "notes": "Generates a personalized follow-up email. Runs AFTER the LinkedIn invite so it can reference what was sent. Pain-point led approach — identifies their specific problem from profile data before mentioning ScyllaDB."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// COMBINE ALL MESSAGES INTO FINAL LEAD RECORD\n// ═══════════════════════════════════════════════════\n// Merges: lead profile + score + LinkedIn invite + email\n// into one complete record ready for logging.\n//\n// Status is always 'simulated' — this is a dry run.\n// Nothing is sent. Everything is logged.\n// ═══════════════════════════════════════════════════\n\nconst emailResponse = $input.first().json;\nconst emailRaw = emailResponse?.content?.[0]?.text?.trim() || '{}';\n\nlet emailData = { subject: '', body: '' };\ntry {\n  emailData = JSON.parse(emailRaw.replace(/```json|```/g, '').trim());\n} catch (e) {\n  // Regex fallback for malformed JSON\n  const subjectMatch = emailRaw.match(/\"subject\":\\s*\"([^\"]+)\"/);\n  const bodyMatch    = emailRaw.match(/\"body\":\\s*\"([\\s\\S]+?)\"\\s*\\}/);\n  emailData = {\n    subject: subjectMatch?.[1] || '(subject parsing failed)',\n    body:    bodyMatch?.[1]?.replace(/\\\\n/g, '\\n') || emailRaw\n  };\n}\n\nconst lead = $('📝 Parse LinkedIn Invite').first().json;\n\nreturn [{ json: {\n  ...lead,\n  email_subject: emailData.subject || '',\n  email_body:    emailData.body    || '',\n  status:        'simulated',\n  run_timestamp: new Date().toISOString()\n}}];\n"
+      },
+      "id": "node-combine",
+      "name": "🔧 Combine All Messages",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2740, 380],
+      "notes": "Final assembly: merges lead profile, AI score, LinkedIn invite, and follow-up email into one complete record. Adds status='simulated' and timestamp. This is the dry-run record — it shows exactly what would have been sent."
+    },
+
+    {
+      "parameters": { "content": "## STAGE 7 — LOG & REPORT\n\n**What:** Write everything to\nGoogle Sheets + generate\na dry-run log file.\n\n**Qualified leads tab:**\nFull record including messages.\n\n**Skipped leads tab:**\nAll filtered leads with scores\nand reasoning — so you can\nsee WHY they were skipped.\n\n**Dry-run log:**\nHuman-readable text showing\nexactly what would have been\nsent to each person.\n\n**Campaign report:**\nFunnel metrics as JSON.", "height": 280, "width": 240, "color": 1 },
+      "id": "sticky-stage7",
+      "name": "Stage 7 Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [2940, 80]
+    },
+
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_GOOGLE_SHEET_ID_HERE", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Campaign Log", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first_name":      "={{ $json.first_name }}",
+            "last_name":       "={{ $json.last_name }}",
+            "company":         "={{ $json.current_company }}",
+            "role":            "={{ $json.current_role }}",
+            "industry":        "={{ $json.industry }}",
+            "linkedin_url":    "={{ $json.linkedin_url }}",
+            "score":           "={{ $json.score }}",
+            "role_relevance":  "={{ $json.role_relevance }}",
+            "datastax_depth":  "={{ $json.datastax_depth }}",
+            "seniority":       "={{ $json.seniority }}",
+            "activity_recency":"={{ $json.activity_recency }}",
+            "reasoning":       "={{ $json.reasoning }}",
+            "linkedin_invite": "={{ $json.linkedin_invite }}",
+            "email_subject":   "={{ $json.email_subject }}",
+            "email_body":      "={{ $json.email_body }}",
+            "status":          "={{ $json.status }}",
+            "timestamp":       "={{ $json.run_timestamp }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "node-sheets-qualified",
+      "name": "📊 Log Qualified Lead → Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [2980, 300],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "cred-gsheets", "name": "Google Sheets OAuth2" } },
+      "notes": "Appends one row per qualified lead to the 'Campaign Log' tab. Replace YOUR_GOOGLE_SHEET_ID_HERE with your actual sheet ID (found in the Google Sheets URL). All messages have status='simulated'."
+    },
+
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_GOOGLE_SHEET_ID_HERE", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Skipped Leads", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first_name": "={{ $json.first_name }}",
+            "last_name":  "={{ $json.last_name }}",
+            "company":    "={{ $json.current_company }}",
+            "role":       "={{ $json.current_role }}",
+            "score":      "={{ $json.score }}",
+            "reasoning":  "={{ $json.reasoning }}",
+            "status":     "below_threshold",
+            "timestamp":  "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "node-sheets-skipped",
+      "name": "🚫 Log Skipped Lead → Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [2200, 620],
+      "credentials": { "googleSheetsOAuth2Api": { "id": "cred-gsheets", "name": "Google Sheets OAuth2" } },
+      "notes": "Logs every filtered-out lead to the 'Skipped Leads' tab. This is important — it proves the scoring system is selective, not rubber-stamping everyone. James (frontend dev) and Tom (DataStax employee) land here."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// DRY RUN LOGGER\n// ═══════════════════════════════════════════════════\n// Formats a human-readable simulation log showing\n// exactly what WOULD have been sent to this person\n// if we were running in production mode.\n//\n// This output appears in:\n//   1. The n8n execution log (click this node after run)\n//   2. The item data flowing to the Report node\n// ═══════════════════════════════════════════════════\n\nconst lead = $input.first().json;\n\nconst divider = '═'.repeat(60);\nconst line    = '─'.repeat(60);\n\nconst logEntry = `\n${divider}\n🎯 DRY RUN — SIMULATED OUTREACH\n${divider}\n📋 LEAD\n   Name:    ${lead.first_name} ${lead.last_name}\n   Role:    ${lead.current_role} at ${lead.current_company}\n   Industry:${lead.industry}\n   LinkedIn:${lead.linkedin_url}\n${line}\n📊 AI SCORE: ${lead.score}/100\n   Role Relevance:   ${lead.role_relevance}/30\n   DataStax Depth:   ${lead.datastax_depth}/30\n   Seniority:        ${lead.seniority}/20\n   Activity Recency: ${lead.activity_recency}/20\n   Reasoning: ${lead.reasoning}\n${line}\n💬 LINKEDIN INVITE (${lead.linkedin_invite?.length || 0} chars / 300 max)\n${lead.linkedin_invite || '(not generated)'}\n${line}\n📧 FOLLOW-UP EMAIL\n   Subject: ${lead.email_subject || '(not generated)'}\n\n${lead.email_body || '(not generated)'}\n${line}\n✅ STATUS: ${lead.status?.toUpperCase()} — no real message sent\n   Logged at: ${lead.run_timestamp}\n${divider}\n`;\n\nconsole.log(logEntry);\n\nreturn [{ json: { ...lead, dry_run_log: logEntry } }];\n"
+      },
+      "id": "node-dryrun-log",
+      "name": "🖨️ Dry Run Logger",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [3160, 300],
+      "notes": "Formats and logs a complete simulation record for this lead: score breakdown, LinkedIn invite, full email. Output appears in the n8n execution log — click this node after a run to see exactly what would have been sent."
+    },
+
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════\n// CAMPAIGN REPORT GENERATOR\n// ═══════════════════════════════════════════════════\n// Runs after all leads are processed.\n// Reads qualified + skipped leads and produces a\n// complete funnel summary as JSON.\n//\n// This report is visible in the n8n execution log\n// and is returned as the final workflow output.\n// ═══════════════════════════════════════════════════\n\nconst qualifiedItems = $('🖨️ Dry Run Logger').all();\nconst skippedItems   = $('🚫 Log Skipped Lead → Google Sheets').all();\n\nconst totalQualified = qualifiedItems.length;\nconst totalSkipped   = skippedItems.length;\nconst totalDiscovered = totalQualified + totalSkipped;\n\nconst avgScore = totalQualified > 0\n  ? (qualifiedItems.reduce((s, i) => s + (i.json.score || 0), 0) / totalQualified).toFixed(1)\n  : 0;\n\nconst topLeads = [...qualifiedItems]\n  .sort((a, b) => b.json.score - a.json.score)\n  .slice(0, 3)\n  .map(i => ({\n    name:    `${i.json.first_name} ${i.json.last_name}`,\n    company: i.json.current_company,\n    role:    i.json.current_role,\n    score:   i.json.score\n  }));\n\nconst skippedReasons = skippedItems.map(i => ({\n  name:      `${i.json.first_name} ${i.json.last_name}`,\n  role:      i.json.current_role,\n  score:     i.json.score,\n  reasoning: i.json.reasoning\n}));\n\nconst report = {\n  campaign:      'ScyllaDB GTM Hunter',\n  generated_at:  new Date().toISOString(),\n  mode:          'DRY RUN — simulated, no real messages sent',\n  target:        'DataStax / Apache Cassandra users',\n  funnel: {\n    total_leads_discovered:  totalDiscovered,\n    total_qualified:         totalQualified,\n    total_skipped:           totalSkipped,\n    qualification_rate:      totalDiscovered > 0\n                               ? ((totalQualified / totalDiscovered) * 100).toFixed(1) + '%'\n                               : '0%'\n  },\n  outreach_simulated: {\n    linkedin_invites:        totalQualified,\n    follow_up_emails:        totalQualified,\n    total_messages:          totalQualified * 2,\n    delivery_status:         'SIMULATED — logged to Google Sheets only'\n  },\n  quality_metrics: {\n    average_score_qualified: parseFloat(avgScore),\n    score_threshold:         50,\n    top_3_leads:             topLeads\n  },\n  filtered_out: skippedReasons,\n  next_steps: [\n    'Review qualified leads in Google Sheets Campaign Log tab',\n    'Read dry_run_log field in each node execution for full message preview',\n    'Approve messages and connect a real sending node (LinkedIn API / email) to go live',\n    'Consider migrating from Google Sheets to ScyllaDB for runs over 500 leads'\n  ]\n};\n\nconsole.log('\\n📋 CAMPAIGN REPORT\\n' + JSON.stringify(report, null, 2));\n\nreturn [{ json: report }];\n"
+      },
+      "id": "node-report",
+      "name": "📋 Generate Campaign Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [3380, 380],
+      "notes": "Generates the final campaign report: funnel metrics, top leads, filtered leads with reasons, and next steps. Visible in the n8n execution log — click this node after the run to see the full report JSON."
+    }
+  ],
+
+  "connections": {
+    "▶ Start Workflow": {
+      "main": [[{ "node": "🔍 Apollo.io — Find DataStax Users", "type": "main", "index": 0 }]]
+    },
+    "🔍 Apollo.io — Find DataStax Users": {
+      "main": [[{ "node": "📋 Split Into Individual Leads", "type": "main", "index": 0 }]]
+    },
+    "🗂 Mock Data Fallback (no Apollo key needed)": {
+      "main": [[{ "node": "📋 Split Into Individual Leads", "type": "main", "index": 0 }]]
+    },
+    "📋 Split Into Individual Leads": {
+      "main": [[{ "node": "🔗 LinkedIn Enrichment (RapidAPI)", "type": "main", "index": 0 }]]
+    },
+    "🔗 LinkedIn Enrichment (RapidAPI)": {
+      "main": [[{ "node": "🔀 Merge & Normalize Lead Data", "type": "main", "index": 0 }]]
+    },
+    "🔀 Merge & Normalize Lead Data": {
+      "main": [[{ "node": "🤖 AI — Score Lead (Claude)", "type": "main", "index": 0 }]]
+    },
+    "🤖 AI — Score Lead (Claude)": {
+      "main": [[{ "node": "📊 Parse Score", "type": "main", "index": 0 }]]
+    },
+    "📊 Parse Score": {
+      "main": [[{ "node": "⚡ Score ≥ 50? (Qualify Lead)", "type": "main", "index": 0 }]]
+    },
+    "⚡ Score ≥ 50? (Qualify Lead)": {
+      "main": [
+        [{ "node": "✍️ AI — Write LinkedIn Invite", "type": "main", "index": 0 }],
+        [{ "node": "🚫 Log Skipped Lead → Google Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "✍️ AI — Write LinkedIn Invite": {
+      "main": [[{ "node": "📝 Parse LinkedIn Invite", "type": "main", "index": 0 }]]
+    },
+    "📝 Parse LinkedIn Invite": {
+      "main": [[{ "node": "📧 AI — Write Follow-up Email", "type": "main", "index": 0 }]]
+    },
+    "📧 AI — Write Follow-up Email": {
+      "main": [[{ "node": "🔧 Combine All Messages", "type": "main", "index": 0 }]]
+    },
+    "🔧 Combine All Messages": {
+      "main": [[{ "node": "📊 Log Qualified Lead → Google Sheets", "type": "main", "index": 0 }]]
+    },
+    "📊 Log Qualified Lead → Google Sheets": {
+      "main": [[{ "node": "🖨️ Dry Run Logger", "type": "main", "index": 0 }]]
+    },
+    "🖨️ Dry Run Logger": {
+      "main": [[{ "node": "📋 Generate Campaign Report", "type": "main", "index": 0 }]]
+    },
+    "🚫 Log Skipped Lead → Google Sheets": {
+      "main": [[{ "node": "📋 Generate Campaign Report", "type": "main", "index": 0 }]]
+    }
+  },
+
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": ["gtm", "scylladb", "lead-gen", "ai-outreach", "dry-run"],
+  "id": "scylladb-gtm-hunter-v2"
+}

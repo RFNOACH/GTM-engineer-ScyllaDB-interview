@@ -1,0 +1,100 @@
+<svg width="1280" height="320" viewBox="0 0 1280 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d0d1a"/>
+      <stop offset="100%" style="stop-color:#1a0a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="320" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.15" opacity="0.08"/>
+  </pattern>
+  <rect width="1280" height="320" fill="url(#grid)"/>
+
+  <!-- Decorative circles background -->
+  <circle cx="1100" cy="60" r="120" fill="none" stroke="#7c3aed" stroke-width="0.5" opacity="0.15"/>
+  <circle cx="1100" cy="60" r="80" fill="none" stroke="#7c3aed" stroke-width="0.5" opacity="0.2"/>
+  <circle cx="180" cy="270" r="90" fill="none" stroke="#06b6d4" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- Pipeline nodes -->
+  <!-- Node 1: Find -->
+  <rect x="680" y="228" width="80" height="36" rx="8" fill="#7c3aed" opacity="0.25" stroke="#7c3aed" stroke-width="1"/>
+  <text x="720" y="251" font-family="monospace" font-size="10" fill="#a78bfa" text-anchor="middle">FIND</text>
+
+  <!-- Arrow -->
+  <line x1="762" y1="246" x2="788" y2="246" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.6"/>
+  <polygon points="788,242 796,246 788,250" fill="#06b6d4" opacity="0.6"/>
+
+  <!-- Node 2: Score -->
+  <rect x="798" y="228" width="80" height="36" rx="8" fill="#0e7490" opacity="0.25" stroke="#06b6d4" stroke-width="1"/>
+  <text x="838" y="251" font-family="monospace" font-size="10" fill="#67e8f9" text-anchor="middle">SCORE</text>
+
+  <!-- Arrow -->
+  <line x1="880" y1="246" x2="906" y2="246" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.6"/>
+  <polygon points="906,242 914,246 906,250" fill="#06b6d4" opacity="0.6"/>
+
+  <!-- Node 3: Filter -->
+  <rect x="916" y="228" width="80" height="36" rx="8" fill="#065f46" opacity="0.25" stroke="#10b981" stroke-width="1"/>
+  <text x="956" y="251" font-family="monospace" font-size="10" fill="#6ee7b7" text-anchor="middle">FILTER</text>
+
+  <!-- Arrow -->
+  <line x1="998" y1="246" x2="1024" y2="246" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.6"/>
+  <polygon points="1024,242 1032,246 1024,250" fill="#06b6d4" opacity="0.6"/>
+
+  <!-- Node 4: Write -->
+  <rect x="1034" y="228" width="80" height="36" rx="8" fill="#92400e" opacity="0.25" stroke="#f59e0b" stroke-width="1"/>
+  <text x="1074" y="251" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle">WRITE</text>
+
+  <!-- Arrow -->
+  <line x1="1116" y1="246" x2="1142" y2="246" stroke="url(#lineGrad)" stroke-width="1.5" opacity="0.6"/>
+  <polygon points="1142,242 1150,246 1142,250" fill="#06b6d4" opacity="0.6"/>
+
+  <!-- Node 5: Report -->
+  <rect x="1152" y="228" width="80" height="36" rx="8" fill="#4c1d95" opacity="0.25" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="1192" y="251" font-family="monospace" font-size="10" fill="#c4b5fd" text-anchor="middle">REPORT</text>
+
+  <!-- Accent bar top -->
+  <rect x="0" y="0" width="1280" height="4" fill="url(#accent)"/>
+
+  <!-- Accent bar bottom -->
+  <rect x="0" y="316" width="1280" height="4" fill="url(#accent)"/>
+
+  <!-- Main title -->
+  <text x="100" y="130" font-family="Arial Black, sans-serif" font-size="62" font-weight="900" fill="white" filter="url(#glow)">ScyllaDB</text>
+  <text x="100" y="195" font-family="Arial Black, sans-serif" font-size="62" font-weight="900" fill="url(#accent)" filter="url(#glow)">GTM Hunter</text>
+
+  <!-- Subtitle -->
+  <text x="103" y="228" font-family="Arial, sans-serif" font-size="18" fill="#94a3b8" letter-spacing="2">AI-POWERED LEAD DISCOVERY &amp; OUTREACH ENGINE</text>
+
+  <!-- Tech badges -->
+  <rect x="103" y="265" width="62" height="22" rx="4" fill="#1e1b4b" stroke="#4338ca" stroke-width="1"/>
+  <text x="134" y="281" font-family="monospace" font-size="10" fill="#818cf8" text-anchor="middle">n8n</text>
+
+  <rect x="173" y="265" width="80" height="22" rx="4" fill="#1a2e1a" stroke="#16a34a" stroke-width="1"/>
+  <text x="213" y="281" font-family="monospace" font-size="10" fill="#86efac" text-anchor="middle">Apollo.io</text>
+
+  <rect x="261" y="265" width="72" height="22" rx="4" fill="#1e1729" stroke="#7c3aed" stroke-width="1"/>
+  <text x="297" y="281" font-family="monospace" font-size="10" fill="#a78bfa" text-anchor="middle">Claude AI</text>
+
+  <rect x="341" y="265" width="100" height="22" rx="4" fill="#0f2027" stroke="#0891b2" stroke-width="1"/>
+  <text x="391" y="281" font-family="monospace" font-size="10" fill="#67e8f9" text-anchor="middle">Google Sheets</text>
+
+  <rect x="449" y="265" width="88" height="22" rx="4" fill="#1c1007" stroke="#d97706" stroke-width="1"/>
+  <text x="493" y="281" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle">ScyllaDB-ready</text>
+</svg>

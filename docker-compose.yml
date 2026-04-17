@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=changeme        # ← Change this before any public deployment
+      - GENERIC_TIMEZONE=UTC
+      - WEBHOOK_URL=http://localhost:5678/
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=all
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=all
+      - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
+      # API keys (optional — you can also set them via n8n Credentials UI)
+      - APOLLO_API_KEY=${APOLLO_API_KEY}
+      - RAPIDAPI_KEY=${RAPIDAPI_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - ./workflows:/home/node/workflows
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://localhost:5678/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

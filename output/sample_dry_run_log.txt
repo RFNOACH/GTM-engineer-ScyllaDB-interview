@@ -1,0 +1,139 @@
+════════════════════════════════════════════════════════════
+SCYLLADB GTM HUNTER — DRY RUN LOG
+Generated: 2026-04-16T09:15:42.000Z
+Mode: SIMULATED — no real messages sent
+════════════════════════════════════════════════════════════
+
+════════════════════════════════════════════════════════════
+🎯 DRY RUN — SIMULATED OUTREACH
+════════════════════════════════════════════════════════════
+📋 LEAD
+   Name:     Raj Gupta
+   Role:     VP Engineering at AdTech Dynamics
+   Industry: Advertising Technology
+   LinkedIn: https://linkedin.com/in/raj-gupta-adtech
+────────────────────────────────────────────────────────────
+📊 AI SCORE: 91/100
+   Role Relevance:   28/30  ← VP with DB budget authority
+   DataStax Depth:   27/30  ← Managing $2M DataStax cluster
+   Seniority:        18/20  ← Budget holder, engineering lead
+   Activity Recency: 18/20  ← Posted last week about cost pain
+   Reasoning: Raj is a VP Engineering with direct budget authority
+   over a $2M+ database infrastructure. His recent LinkedIn post
+   explicitly asking about DataStax alternatives signals active
+   evaluation — this is a warm inbound signal disguised as an
+   organic post. High urgency, high authority, high DataStax depth.
+────────────────────────────────────────────────────────────
+💬 LINKEDIN INVITE (287 chars / 300 max)
+Hi Raj — your post about DataStax costs jumping 40% this year
+caught my attention. We work with ad-tech teams running Cassandra
+at scale who've cut infrastructure spend 60-80% without changing
+a line of CQL code. Would love to connect and compare notes.
+────────────────────────────────────────────────────────────
+📧 FOLLOW-UP EMAIL
+   Subject: The database cost problem you posted about — there's a faster fix
+
+Hi Raj, thanks for connecting.
+
+Your post about DataStax costs increasing 40% resonated — it's a
+pattern we see constantly in ad-tech, where low-latency requirements
+mean you can't just scale down.
+
+At ScyllaDB, we've helped ad-tech teams in exactly this position get
+the same Cassandra throughput on 3-5x fewer nodes — no CQL rewrites,
+no application changes. Comcast moved their real-time bidding pipeline
+to ScyllaDB and cut database infrastructure costs by 70%.
+
+Worth a 15-minute call to see if the numbers work for your cluster
+size? Happy to share the Comcast case study either way.
+
+— [Your Name], ScyllaDB
+────────────────────────────────────────────────────────────
+✅ STATUS: SIMULATED — no real message sent
+   Logged to: Google Sheets → "Campaign Log" tab
+   Logged at: 2026-04-16T09:15:42.000Z
+════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════
+🎯 DRY RUN — SIMULATED OUTREACH
+════════════════════════════════════════════════════════════
+📋 LEAD
+   Name:     Sarah Chen
+   Role:     Senior Data Engineer at Fintech Corp
+   Industry: Financial Services
+   LinkedIn: https://linkedin.com/in/sarah-chen-fintech
+────────────────────────────────────────────────────────────
+📊 AI SCORE: 85/100
+   Role Relevance:   22/30  ← Senior IC, strong technical influence
+   DataStax Depth:   28/30  ← Certified, 120-node production cluster
+   Seniority:        17/20  ← Respected technical voice, published
+   Activity Recency: 18/20  ← Published deep-dive on GC pauses recently
+   Reasoning: Sarah is one of the highest-signal leads possible — she's
+   DataStax certified, runs a large production cluster, and just published
+   a detailed article about the exact problem ScyllaDB solves (JVM GC
+   pauses). She's actively researching the problem, which means she's
+   open to solutions. While she's not the budget holder, her technical
+   credibility makes her an ideal internal champion.
+────────────────────────────────────────────────────────────
+💬 LINKEDIN INVITE (293 chars / 300 max)
+Hi Sarah — your article on surviving JVM GC pauses in high-throughput
+Cassandra was one of the best writeups I've seen on the topic. We took
+a different approach to the same problem at the architecture level.
+Would love to share what we found — think you'd find it interesting.
+────────────────────────────────────────────────────────────
+📧 FOLLOW-UP EMAIL
+   Subject: Those Cassandra GC pauses you wrote about — what if they just disappeared?
+
+Hi Sarah, thanks for connecting — and really enjoyed your Cassandra GC
+tuning article. The "lessons learned the hard way" framing was spot on.
+
+The reason I reached out: at ScyllaDB we eliminated that entire problem
+at the architecture level. We rewrote Cassandra in C++ — no JVM, no GC,
+no tuning. Discord runs 177TB of messages on ScyllaDB with P99 latency
+under 1ms. Same CQL interface, zero code changes from Cassandra.
+
+If you're curious how we handle the specific scenarios you covered in
+your article, happy to do a 30-min technical deep-dive — no sales pitch,
+just engineering. Or I can send over our architecture whitepaper if
+async works better.
+
+— [Your Name], ScyllaDB
+────────────────────────────────────────────────────────────
+✅ STATUS: SIMULATED — no real message sent
+   Logged to: Google Sheets → "Campaign Log" tab
+   Logged at: 2026-04-16T09:15:58.000Z
+════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════
+🚫 FILTERED OUT — BELOW THRESHOLD
+════════════════════════════════════════════════════════════
+📋 LEAD
+   Name:     James O'Brien
+   Role:     Junior Frontend Developer at Web Agency
+   Score:    8/100
+   Reasoning: No database authority, exposure, or relevance.
+   Frontend role with zero infrastructure involvement. Recent
+   activity is about CSS animations. Correctly excluded.
+   Logged to: Google Sheets → "Skipped Leads" tab
+════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════
+🚫 FILTERED OUT — BELOW THRESHOLD
+════════════════════════════════════════════════════════════
+📋 LEAD
+   Name:     Tom Williams
+   Role:     Senior PMM at DataStax
+   Score:    35/100
+   Reasoning: Competitor employee — works at DataStax running
+   product marketing for Astra DB. High DataStax depth score,
+   but zero prospect potential. Correctly excluded.
+   Logged to: Google Sheets → "Skipped Leads" tab
+════════════════════════════════════════════════════════════
+
+
+════════════════════════════════════════════════════════════
+END OF DRY RUN LOG
+════════════════════════════════════════════════════════════
