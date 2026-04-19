@@ -47,6 +47,18 @@ The whole thing runs with one click inside n8n, a visual workflow tool. No codin
 
 ---
 
+## Built With
+
+| Tool | Role |
+|---|---|
+| [n8n](https://n8n.io) | Workflow orchestration — visual, self-hostable, exportable |
+| [Apollo.io](https://apollo.io) | B2B lead discovery — 275M+ professional profiles |
+| [RapidAPI LinkedIn Data API](https://rapidapi.com) | LinkedIn profile enrichment |
+| [Claude (Anthropic)](https://anthropic.com) | AI lead scoring + personalized message generation |
+| [Google Sheets](https://sheets.google.com) | Data storage and campaign reporting (PoC) |
+
+
+
 ## How We Identify Leads
 
 ### The Logic
@@ -334,17 +346,6 @@ scylla-gtm-hunter/
 7. **Deploy to a VPS** — $5/month Hetzner or DigitalOcean box, n8n behind nginx with SSL
 
 ---
-
-## Built With
-
-| Tool | Role |
-|---|---|
-| [n8n](https://n8n.io) | Workflow orchestration — visual, self-hostable, exportable |
-| [Apollo.io](https://apollo.io) | B2B lead discovery — 275M+ professional profiles |
-| [RapidAPI LinkedIn Data API](https://rapidapi.com) | LinkedIn profile enrichment |
-| [Claude (Anthropic)](https://anthropic.com) | AI lead scoring + personalized message generation |
-| [Google Sheets](https://sheets.google.com) | Data storage and campaign reporting (PoC) |
-
 
 ---
 
